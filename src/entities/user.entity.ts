@@ -3,6 +3,7 @@ import {
   Column,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
@@ -38,6 +39,9 @@ class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Client, (client) => client.userWhoAdd)
+  clients: Client[];
 
   @BeforeUpdate()
   @BeforeInsert()

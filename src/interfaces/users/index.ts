@@ -1,3 +1,5 @@
+import { IClientResponse } from "../clients";
+
 export interface IUserRequest {
   name: string;
   email: string;
@@ -15,6 +17,7 @@ export interface IUserResponse {
   phoneNumber?: string;
   registryDate?: Date;
   deletedAt?: Date | null;
+  clients: Array<IClientResponse> | null;
 }
 
 export interface IUserUpdateRequest {

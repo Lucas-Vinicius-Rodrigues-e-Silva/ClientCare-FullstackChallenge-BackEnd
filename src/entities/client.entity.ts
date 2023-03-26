@@ -2,10 +2,12 @@ import {
   Entity,
   Column,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Contact } from "./contacts.entity";
 import { User } from "./user.entity";
 
 @Entity("clients")
@@ -31,7 +33,10 @@ class Client {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => User, (users) => users, { onDelete: "CASCADE" })
+  @OneToMany(() => Contact, (contact) => contact.clientWhoBelongs)
+  contacts: Contact[];
+
+  @ManyToOne(() => User, (user) => user, { onDelete: "CASCADE" })
   userWhoAdd: User;
 }
 

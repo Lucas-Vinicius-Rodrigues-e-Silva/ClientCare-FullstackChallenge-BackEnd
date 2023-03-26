@@ -17,6 +17,7 @@
     "@types/node": "^18.15.4",
     "@types/yup": "^0.32.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "4.18.2",
     "express-async-errors": "3.1.1",
     "json-web-token": "^3.2.0",
@@ -31,5 +32,8 @@
     "typescript": "^5.0.2",
     "yup": "0.32.11"
   },
-  "repository": "git@github.com:Lucas-Vinicius-Rodrigues-e-Silva/fullstack-challenge-backend-lucas-rodrigues.git"
+  "repository": "git@github.com:Lucas-Vinicius-Rodrigues-e-Silva/fullstack-challenge-backend-lucas-rodrigues.git",
+  "devDependencies": {
+    "@types/cors": "^2.8.13"
+  }
 }

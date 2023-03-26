@@ -5,14 +5,17 @@ import AppError from "../../errors/AppError";
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/user.entity";
 import ISessionRequest from "../../interfaces/session";
+import { IUserResponse } from "../../interfaces/users";
+import { userReturnedSerializer } from "../../schemas/users.schemas";
 
 const createSessionService = async ({
   email,
   password,
-}: ISessionRequest): Promise<String> => {
+}: ISessionRequest): Promise<any> => {
   const userRepository = AppDataSource.getRepository(User);
   const allUsers = await userRepository.find({ withDeleted: true });
   const findUser = await allUsers.find((users) => users.email === email);
+
   if (!findUser) {
     throw new AppError("Invalid credentials!", 403);
   }
@@ -39,7 +42,12 @@ const createSessionService = async ({
     }
   );
 
-  return token;
+  const correctUserReturn = await userReturnedSerializer.validate(findUser, {
+    stripUnknown: true,
+  });
+  const data = { token: token, user: correctUserReturn };
+
+  return data;
 };
 
 export default createSessionService;
