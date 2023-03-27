@@ -3,10 +3,7 @@ import { DataSource } from "typeorm";
 import { User } from "./entities/user.entity";
 import { Client } from "./entities/client.entity";
 import { Contact } from "./entities/contacts.entity";
-import { alterUser1679505317643 } from "./migrations/1679505317643-alterUser";
-import { initialMigration1679428883584 } from "./migrations/1679428883584-initialMigration";
-import { createClientAndContact1679517734768 } from "./migrations/1679517734768-createClientAndContact";
-import { initialMigration1679578485699 } from "./migrations/1679578485699-initialMigration";
+import { alterUsersAndClientsReturn1679850208793 } from "./migrations/1679850208793-alterUsersAndClientsReturn";
 
 const AppDataSource = new DataSource(
   process.env.NODE_ENV === "test"
@@ -26,12 +23,7 @@ const AppDataSource = new DataSource(
         logging: true,
         synchronize: false,
         entities: [User, Client, Contact],
-        migrations: [
-          initialMigration1679428883584,
-          alterUser1679505317643,
-          createClientAndContact1679517734768,
-          initialMigration1679578485699,
-        ],
+        migrations: [alterUsersAndClientsReturn1679850208793],
       }
 );
 

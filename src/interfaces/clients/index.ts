@@ -1,5 +1,3 @@
-import { IUserRequest, IUserResponse } from "../users";
-
 export interface IClientRequest {
   name: string;
   email: string;
