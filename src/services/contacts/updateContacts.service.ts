@@ -1,6 +1,9 @@
 import AppDataSource from "../../data-source";
 import { Contact } from "../../entities/contacts.entity";
-import { contactUpdateSerializer } from "../../schemas/contacts.schemas";
+import {
+  contactReturnedSerializer,
+  contactUpdateSerializer,
+} from "../../schemas/contacts.schemas";
 import {
   IContactUpdateRequest,
   IContactResponse,
@@ -11,16 +14,26 @@ const updateContactsService = async (
   contactId: string
 ): Promise<IContactResponse> => {
   const contactRepository = AppDataSource.getRepository(Contact);
-  const findContact = await contactRepository.findOneBy({ id: contactId });
+  const getContactDataQueryBuilder =
+    contactRepository.createQueryBuilder("contacts");
+
+  const findContact = await getContactDataQueryBuilder
+    .leftJoinAndSelect("contacts.clientWhoBelongs", "clients")
+    .orderBy()
+    .where("contacts.id = :id", { id: contactId })
+    .getOne();
   const updateContact = contactRepository.create({
     ...findContact,
     ...contactData,
   });
   await contactRepository.save(updateContact);
 
-  const correctContact = await contactUpdateSerializer.validate(updateContact, {
-    stripUnknown: true,
-  });
+  const correctContact = await contactReturnedSerializer.validate(
+    updateContact,
+    {
+      stripUnknown: true,
+    }
+  );
 
   return correctContact!;
 };
