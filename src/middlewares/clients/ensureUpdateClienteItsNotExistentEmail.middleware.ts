@@ -9,12 +9,14 @@ export const ensureUpdateClientItsNotExistentEmailMiddleware = async (
   next: NextFunction
 ) => {
   const clientRepository = AppDataSource.getRepository(Client);
-  const findClient = await clientRepository.findOneBy({
-    email: req.body.email,
-  });
+  const clients = await clientRepository.find({ withDeleted: true });
 
-  if (findClient) {
-    throw new AppError("Client already exists!", 404);
+  const clientsAlreadyExists = clients.find(
+    (client) => client.email === req.body.email
+  );
+
+  if (clientsAlreadyExists) {
+    throw new AppError("Client already exists!", 409);
   }
   return next();
 };

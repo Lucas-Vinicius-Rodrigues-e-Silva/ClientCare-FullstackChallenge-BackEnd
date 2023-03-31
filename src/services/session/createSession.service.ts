@@ -5,7 +5,6 @@ import AppError from "../../errors/AppError";
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/user.entity";
 import ISessionRequest from "../../interfaces/session";
-import { IUserResponse } from "../../interfaces/users";
 import { userReturnedSerializer } from "../../schemas/users.schemas";
 
 const createSessionService = async ({
@@ -45,6 +44,7 @@ const createSessionService = async ({
   const correctUserReturn = await userReturnedSerializer.validate(findUser, {
     stripUnknown: true,
   });
+
   const data = { token: token, user: correctUserReturn };
 
   return data;
