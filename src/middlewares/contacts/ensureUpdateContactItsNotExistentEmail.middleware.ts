@@ -9,12 +9,14 @@ export const ensureUpdateContactItsNotExistentEmailMiddleware = async (
   next: NextFunction
 ) => {
   const contactRepository = AppDataSource.getRepository(Contact);
-  const findContact = await contactRepository.findOneBy({
-    email: req.body.email,
-  });
+  const contacts = await contactRepository.find({ withDeleted: true });
 
-  if (findContact) {
-    throw new AppError("Contact already exists!", 404);
+  const contactAlreadyExists = contacts.find(
+    (contact) => contact.email === req.body.email
+  );
+
+  if (contactAlreadyExists) {
+    throw new AppError("Contact already exists!", 409);
   }
   return next();
 };
