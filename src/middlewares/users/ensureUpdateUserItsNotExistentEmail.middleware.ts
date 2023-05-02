@@ -8,11 +8,14 @@ export const ensureUpdateUserItsNotExistentEmailMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.body.email);
   const userRepository = AppDataSource.getRepository(User);
-  const findUser = await userRepository.findOneBy({ email: req.body.email });
-
-  if (findUser) {
-    throw new AppError("User already exists!", 404);
+  if (req.body.email !== undefined) {
+    const findUser = await userRepository.findOneBy({ email: req.body.email });
+    if (findUser) {
+      throw new AppError("User already exists!", 404);
+    }
   }
+
   return next();
 };
